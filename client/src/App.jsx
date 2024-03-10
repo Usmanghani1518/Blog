@@ -5,8 +5,9 @@ import About from "./pages/About.jsx"
 import SignUp from "./pages/SignUp.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import Header from "./Header/Header.jsx";
+import Header from "./Component/Header.jsx";
 import Projects from "./pages/Projects.jsx"
+import FooterCom from "./Component/FooterCom.jsx";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
 <Route path="/Projects" element={<Projects/>}/>
 
     </Routes>
+    <FooterCom/>
     </BrowserRouter>
     </>
   );
