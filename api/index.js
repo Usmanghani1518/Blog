@@ -1,7 +1,29 @@
 import express from "express";
+import dotenv from "dotenv";
+import userRoute from "./routes/user.route.js"
+import authRoute from "./routes/auth.route.js"
+import Database from "./Database.js";
 
 const app = express();
+dotenv.config()
+Database();
 
 app.listen(3000, () => {
-    console.log("the server is running on port 3000");
+    console.log("server is listening on the port 3000");
 });
+
+
+
+
+app.use(express.json())
+app.use("/api",userRoute)
+app.use("/api",authRoute)
+app.use((err,req,res,next)=>{
+    const stausCode = err.stausCode || 500
+    const  message = err.message || "There is an error "
+    res.status(stausCode).json({
+        success:false,
+        stausCode,
+        message
+    })
+})
