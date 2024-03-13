@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Header from "./Component/Header.jsx";
 import Projects from "./pages/Projects.jsx"
 import FooterCom from "./Component/FooterCom.jsx";
+import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 
 
 function App() {
@@ -16,12 +17,15 @@ function App() {
     <BrowserRouter>
     <Header/>
     <Routes>
+      <Route element={<ProtectedRoute/>}>
+
 <Route  path="/" element={<Home/>}/>
 <Route path="/about" element={<About/>} />
-<Route path="/SignUp" element={<SignUp/>} />
 <Route path="/Dashbord" element={<Dashboard/>} />
-<Route path="/SignIn" element={<SignIn/>} />
 <Route path="/Projects" element={<Projects/>}/>
+      </Route>
+<Route path="/SignUp" element={<SignUp/>} />
+<Route path="/SignIn" element={<SignIn/>} />
 
     </Routes>
     <FooterCom/>

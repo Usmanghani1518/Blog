@@ -15,7 +15,6 @@ import {toggleTheme} from "../redux/theme/themeSlicer.js"
 export default function Header() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const {theme} = useSelector((state)=>state.theme)
-  console.log(theme);
   const dispatch = useDispatch();
   const path = useLocation().pathname;
   return (
