@@ -3,9 +3,11 @@ import dotenv from "dotenv";
 import userRoute from "./routes/user.route.js"
 import authRoute from "./routes/auth.route.js"
 import Database from "./Database.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 dotenv.config()
+app.use(cookieParser())
 Database();
 
 app.listen(3000, () => {
