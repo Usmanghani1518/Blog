@@ -1,6 +1,7 @@
-import { Alert, Button, TextInput } from "flowbite-react";
+import { Alert, Button, Spinner, TextInput } from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { updateStart,updateFailure,updateSuccess } from "../redux/user/userSlice.js";
 import {
   getDownloadURL,
   getStorage,
@@ -16,14 +17,17 @@ import 'react-circular-progressbar/dist/styles.css';
 export default function DashProfile() {
 
   const user = useSelector((state) => state.user.currentUser);
+  const {error} = useSelector((state)=>state.user)
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setimageFileUploadProgress] = useState(null);
   const [uploadError, setUploadError] = useState(null);
-  const filePikerRef = useRef();
-  console.log(imageFileUrl, imageFileUploadProgress);
-  console.log(uploadError);
+  const [updateSuccessfully,setupdateSuccessfully] = useState(null)
+  const [imageUloading, setimageUloading] = useState(false);
 
+  const[formData,setFormData] = useState({})
+  const filePikerRef = useRef();
+  const dispatch = useDispatch();
   const inputFileChange = (e) => {
     const image = e.target.files[0];
     if (image.type.startsWith("image/")) {
@@ -31,15 +35,49 @@ export default function DashProfile() {
       setImageFileUrl(URL.createObjectURL(image));
     } else setUploadError("Allow only image file Less then 2MB");
   };
-
-
+    const handleChange= (e)=>{
+      setFormData({...formData,[e.target.id]:e.target.value})
+    }
   useEffect(() => {
     if (imageFile) {
       uploadingImage();
-      console.log(imageFileUrl);
     }
+    dispatch(updateStart())
   }, [imageFile]);
 
+  const handleSubmit = async(e)=>{
+    setupdateSuccessfully(false)
+    e.preventDefault()
+    
+    if (Object.keys(formData) === 0) {
+      return
+    }
+    dispatch(updateStart())
+    try {
+      dispatch(updateStart());
+      if (imageUloading) {
+        return
+      }
+      const res = await fetch(`/api/update/${user._id}`,{
+        method:"PUT",
+       headers:{
+        "Content-Type":"application/json"
+       },
+       body:JSON.stringify(formData)
+      })
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateFailure(data.message))
+      }else{
+      dispatch(updateSuccess(data))
+      setFormData({})
+      setupdateSuccessfully("Updated Successfully")
+      set
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message))
+    }
+  }
 
   const uploadingImage = async () => {
     const storage = getStorage(app);
@@ -53,6 +91,7 @@ export default function DashProfile() {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setimageFileUploadProgress(progress.toFixed(0));
+        setimageUloading("wait Image is Uploading....")
       },
       (error) => {
         setUploadError("Failed to Upload Image Must be less than 2MB"+error);
@@ -64,6 +103,8 @@ export default function DashProfile() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           setImageFileUrl(downloadUrl);
+          setFormData({...formData,avatar: downloadUrl});
+          setimageUloading(false)
         });
       }
     );
@@ -72,7 +113,7 @@ export default function DashProfile() {
   return (
     <div className="mx-w-lg mx-auto p-3 w-full">
       <h1 className="text-center my-7 font-semibold text-3xl">Profile</h1>
-      <form className="flex flex-col md:w-96 mx-auto gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col md:w-96 mx-auto gap-3">
         <input
           type="file"
           accept="image/*"
@@ -112,22 +153,33 @@ export default function DashProfile() {
           id="username"
           placeholder="username"
           defaultValue={user?.username}
+           onChange={handleChange}
         />
         <TextInput
           type="email"
           id="email"
           placeholder="email"
-          defaultValue={user?.email}
+          defaultValue={user?.email} onChange={handleChange}
         />
-        <TextInput type="password" id="password" placeholder="password" />
-        <Button gradientDuoTone="purpleToBlue" outline>
-          Update
+        <TextInput type="password" id="password" placeholder="password"  onChange={handleChange}/>
+        <Button type="Submit" gradientDuoTone="purpleToBlue" outline disabled={imageUloading}>
+          {
+            imageUloading?(<><Spinner size={"md"} className=" mr-2"/><span>Uloading Image...</span></>):"Update"
+          }
+          
         </Button>
       </form>
       <div className="flex justify-between md:w-96 mx-auto">
         <span className="text-red-500 cursor-pointer mt-4">Delete Account</span>
-        <span className="text-red-500 cursor-pointer mt-4">Sign Out</span>
+        <span className="text-red-500 cursor-pointer mt-4">Sign Out</span> <br/>
       </div>
+      <div className="md:w-96 mx-auto">
+
+      {error && <Alert color={"failure"}>{error}</Alert>}
+      {updateSuccessfully && <Alert color={"success"}>{updateSuccessfully}</Alert>}
+</div>
+      
+
     </div>
   );
 }
