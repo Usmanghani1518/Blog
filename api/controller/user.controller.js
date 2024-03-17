@@ -2,9 +2,13 @@ import { errorHandler } from "../utils/error.js";
 import bcryptjs from "bcryptjs";
 import User from "../models/user.models.js";
 
+// this is for the checking the dummy api is working or not it has no role in our project 
 export const testApi = (req, res) => {
   res.json({ message: "api is wrking in the well format" });
 };
+
+// Here we update the user with put request and update his avatar ,username and password
+
 export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.userId) {
     return next(
@@ -72,3 +76,22 @@ export const updateUser = async (req, res, next) => {
     next(error);
   }
 };
+
+// Here we going to delete the user from our dataBase and front-end and clear his cookies
+export const deleteUser = async (req,res,next)=>{
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(403,"You are not  allowed to Delete Account"))
+  }
+  
+    try {
+      await User.findByIdAndDelete(req.params.userId)
+      res.clearCookie("access_token")
+      res.status(200).json({message:"user is deleted Successfully"})
+    } catch (error) {
+      next(error)
+    }
+  }
+// Here we are going to signout the user 
+export const signOut = async (req,res)=>{
+  res.clearCookie("access_token").status(200).json({message:"user  has been signed out successfully"});
+}

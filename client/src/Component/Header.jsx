@@ -11,12 +11,14 @@ import { FaMoon,FaSun } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {toggleTheme} from "../redux/theme/themeSlicer.js"
+import { useUserSignOut } from "./DashProfile.jsx";
 
 export default function Header() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const {theme} = useSelector((state)=>state.theme)
   const dispatch = useDispatch();
   const path = useLocation().pathname;
+  const hadleSignOut = useUserSignOut()
   return (
     <Navbar className="border-b-2">
       <Link
@@ -60,7 +62,7 @@ export default function Header() {
             <Link to={"/Dashbord?tab=profile"}>
               <Dropdown.Item>Profile</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item>Sign Out</Dropdown.Item>
+              <Dropdown.Item onClick={hadleSignOut}>Sign Out</Dropdown.Item>
             </Link>
           </Dropdown>
         ) : (

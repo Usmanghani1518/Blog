@@ -64,7 +64,7 @@ export const authGoogle = async(req,res,next)=>{
       if (user) {
           const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
           const { password, ...rest } = user.toJSON(); // Use toJSON() to convert Mongoose document to plain JavaScript object
-          return res.status(200).cookie("access-token", token, {
+          return res.status(200).cookie("access_token", token, {
               httpOnly: true,
           }).json(rest);
       } else {
@@ -79,7 +79,7 @@ export const authGoogle = async(req,res,next)=>{
           await newUser.save();
           const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
           const { password, ...rest } = newUser.toJSON(); // Use toJSON() to convert Mongoose document to plain JavaScript object
-          return res.status(200).cookie("access-token", token, {
+          return res.status(200).cookie("access_token", token, {
               httpOnly: true
           }).json(rest);
       }
