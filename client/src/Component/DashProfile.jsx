@@ -1,7 +1,7 @@
 import { Alert, Button, Modal, Spinner, TextInput } from "flowbite-react";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import React, { useEffect, useRef, useState } from "react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateStart,
@@ -11,7 +11,7 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   signOutSuccessfully,
-  signOutFailure
+  signOutFailure,
 } from "../redux/user/userSlice.js";
 import {
   getDownloadURL,
@@ -36,7 +36,7 @@ export default function DashProfile() {
   const [formData, setFormData] = useState({});
   const filePikerRef = useRef();
   const dispatch = useDispatch();
-  const handleSignOut = useUserSignOut()
+  const handleSignOut = useUserSignOut();
   const inputFileChange = (e) => {
     const image = e.target.files[0];
     if (image.type.startsWith("image/")) {
@@ -220,14 +220,17 @@ export default function DashProfile() {
             "Update"
           )}
         </Button>
-        {
-          user.isAdmin && (
-            <Link to="/create-post">
-
-            <Button gradientDuoTone="purpleToPink" type="button" className=" w-full">Create the Post</Button>
-            </Link>
-          )
-        }
+        {user.isAdmin && (
+          <Link to="/create-post">
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="button"
+              className=" w-full"
+            >
+              Create the Post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="flex justify-evenly md:w-96 mx-auto">
         <span
@@ -236,7 +239,12 @@ export default function DashProfile() {
         >
           Delete Account
         </span>
-        <span onClick={handleSignOut} className="text-red-500 cursor-pointer mt-4">Sign Out</span>{" "}
+        <span
+          onClick={handleSignOut}
+          className="text-red-500 cursor-pointer mt-4"
+        >
+          Sign Out
+        </span>{" "}
         <br />
       </div>
       <div className="md:w-96 mx-auto">
@@ -274,25 +282,19 @@ export default function DashProfile() {
   );
 }
 
-
-export const useUserSignOut = ()=>{
+export const useUserSignOut = () => {
   const dispatch = useDispatch();
-  const handleSignOut = async ()=>{
-
-    dispatch(deleteUserStart())
-    const  res = await fetch("/api/signout",{
-      method:"POST"
+  const handleSignOut = async () => {
+    dispatch(deleteUserStart());
+    const res = await fetch("/api/signout", {
+      method: "POST",
     });
     const data = await res.json();
     if (!res.ok) {
-      dispatch(signOutFailure(data.message))
-      
+      dispatch(signOutFailure(data.message));
+    } else {
+      dispatch(signOutSuccessfully());
     }
-    else{
-      dispatch(signOutSuccessfully())
-    }
-    
-  }
+  };
   return handleSignOut;
-}
-  
+};
