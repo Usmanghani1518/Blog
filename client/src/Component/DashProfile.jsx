@@ -1,6 +1,7 @@
 import { Alert, Button, Modal, Spinner, TextInput } from "flowbite-react";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import React, { useEffect, useRef, useState } from "react";
+import {Link} from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateStart,
@@ -219,6 +220,14 @@ export default function DashProfile() {
             "Update"
           )}
         </Button>
+        {
+          user.isAdmin && (
+            <Link to="/create-post">
+
+            <Button gradientDuoTone="purpleToPink" type="button" className=" w-full">Create the Post</Button>
+            </Link>
+          )
+        }
       </form>
       <div className="flex justify-evenly md:w-96 mx-auto">
         <span

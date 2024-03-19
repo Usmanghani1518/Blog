@@ -48,7 +48,7 @@ export const signin = async (req, res, next) => {
     if (!validatePassword) {
      return next(errorHandler(404, "the password is incorrect"));
     }
-    const token = jwt.sign({ id: validateUser._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: validateUser._id ,isAdmin:validateUser.isAdmin}, process.env.JWT_SECRET);
     const{password:pass,...rest}= validateUser._doc;
    return res.status(200).cookie("access_token",token,{httpOnly :true}).json(rest)
   } catch (error) {
@@ -62,7 +62,7 @@ export const authGoogle = async(req,res,next)=>{
       let user = await User.findOne({ email });
      
       if (user) {
-          const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+          const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin }, process.env.JWT_SECRET);
           const { password, ...rest } = user.toJSON(); // Use toJSON() to convert Mongoose document to plain JavaScript object
           return res.status(200).cookie("access_token", token, {
               httpOnly: true,
@@ -77,7 +77,7 @@ export const authGoogle = async(req,res,next)=>{
               avatar,
           });
           await newUser.save();
-          const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+          const token = jwt.sign({ id: newUser._id ,isAdmin:newUser.isAdmin }, process.env.JWT_SECRET);
           const { password, ...rest } = newUser.toJSON(); // Use toJSON() to convert Mongoose document to plain JavaScript object
           return res.status(200).cookie("access_token", token, {
               httpOnly: true
