@@ -48,9 +48,11 @@ export const signin = async (req, res, next) => {
     if (!validatePassword) {
      return next(errorHandler(404, "the password is incorrect"));
     }
+    const expireTime = new Date(Date.now()+2*24*60*60*1000)
+    
     const token = jwt.sign({ id: validateUser._id ,isAdmin:validateUser.isAdmin}, process.env.JWT_SECRET);
     const{password:pass,...rest}= validateUser._doc;
-   return res.status(200).cookie("access_token",token,{httpOnly :true}).json(rest)
+   return res.status(200).cookie("access_token",token,{httpOnly:true,expires:expireTime,secure:true}).json(rest)
   } catch (error) {
     next(error);
   }
@@ -61,11 +63,15 @@ export const authGoogle = async(req,res,next)=>{
   try {
       let user = await User.findOne({ email });
      
+      const expireTime = new Date(Date.now()+2*24*60*60*1000)
       if (user) {
+
           const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin }, process.env.JWT_SECRET);
           const { password, ...rest } = user.toJSON(); // Use toJSON() to convert Mongoose document to plain JavaScript object
           return res.status(200).cookie("access_token", token, {
               httpOnly: true,
+              expires:expireTime,
+              secure:true
           }).json(rest);
       } else {
           const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
@@ -80,7 +86,9 @@ export const authGoogle = async(req,res,next)=>{
           const token = jwt.sign({ id: newUser._id ,isAdmin:newUser.isAdmin }, process.env.JWT_SECRET);
           const { password, ...rest } = newUser.toJSON(); // Use toJSON() to convert Mongoose document to plain JavaScript object
           return res.status(200).cookie("access_token", token, {
-              httpOnly: true
+              httpOnly: true,
+              expires:expireTime,
+              secure:true
           }).json(rest);
       }
   } catch (error) {
