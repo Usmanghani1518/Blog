@@ -31,4 +31,5 @@ slug:{
 }
 },{timestamps:true});
 
-export const Post = new mongoose.model("Post",postSchema)
+ const Post = new mongoose.model("Post",postSchema);
+ export default Post

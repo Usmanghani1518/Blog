@@ -1,5 +1,5 @@
 import { errorHandler } from "../utils/error.js"
-import {Post } from '../models/post.model.js'
+import Post  from '../models/post.model.js'
 
 export const CreatePost = async (req,res,next)=>{
     if (!req.user.isAdmin) {
@@ -48,6 +48,19 @@ export const getPost = async (req,res,next)=>{
             lastMonthPost
         })
 
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const deletePost = async (req,res,next)=>{
+    if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+        return next(errorHandler("This user in not authenticate to do this"))
+    }
+    try {
+        await Post.findByIdAndDelete(req.params.postId);
+         res.status(200).json({message:"This post is deleted successfully"})
+    
     } catch (error) {
         next(error)
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -16,15 +16,32 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { useNavigate } from "react-router-dom";
-export default function CreatePost() {
+import { useNavigate, useParams } from "react-router-dom";
+
+export default function update() {
   const [image, setImage] = useState(null);
   const [loadingImage, setloadingImage] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [errorImage, setErrorImage] = useState(null);
   const [formData, setFormData] = useState({});
-  const [errorPublish, seterrorPublish] = useState(null);
+  const [errorUpdate, seterrorUpdate] = useState(null);
   const navigate = useNavigate();
+  const {postId} = useParams()
+ 
+  useEffect(() => {
+    const fetchpost = async () => {
+      const res = await fetch(`/api/post/getpost/?postId=${postId}`);
+      const data = await res.json();
+      if (!res.ok) {
+        seterrorUpdate(data.message)
+      }
+      if (res.ok) {
+        setFormData(data.post[0]);
+      }
+    };
+    fetchpost();
+  }, [postId]);
+  
   const uploadImage = async () => {
     if (!image) {
       setErrorImage("There is no image to upload kindly select it First ");
@@ -62,7 +79,7 @@ export default function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      seterrorPublish(null);
+      seterrorUpdate(null);
       const res = await fetch("/api/post/create", {
         method: "POST",
         headers: {
@@ -72,7 +89,7 @@ export default function CreatePost() {
       });
       const data = await res.json();
       if (!res.ok) {
-        seterrorPublish(data.message);
+        seterrorUpdate(data.message);
         return;
       }
       if (res.ok) {
@@ -81,7 +98,7 @@ export default function CreatePost() {
       }
     } catch (error) {
       console.log(error);
-      seterrorPublish(error);
+      seterrorUpdate(error);
     }
   };
 
@@ -98,13 +115,15 @@ export default function CreatePost() {
             className="flex-1"
             required
             onChange={(e) =>
-              setFormData({ ...formData, tittle: e.target.value })
+                setFormData({ ...formData, tittle: e.target.value })
             }
+            value={formData.tittle || ""}
           />
           <Select
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
+            value={formData.category || ""}
           >
             <option value="uncategorized">Select and Option</option>
             <option value="javascript">JavaScript</option>
@@ -127,10 +146,10 @@ export default function CreatePost() {
           >
             {loadingImage ? (
               <>
-                <Spinner value="uploading image" size={"lg"} />{" "}
+                <Spinner value="uploading image" size={"lg"} />
               </>
             ) : (
-              "Upload Image"
+              "Update Image"
             )}{" "}
           </Button>
         </div>
@@ -139,33 +158,30 @@ export default function CreatePost() {
             {errorImage}
           </Alert>
         )}
-        {imageUrl && (
+        {formData.postImg && (
           <img
             className="w-full h-72 object-cover"
-            src={imageUrl}
+            src={formData.postImg}
             alt="uploaded img"
           />
-        )}
+        )} 
         <ReactQuill
           theme="snow"
           placeholder="Write your  blog here..."
           className="h-72 mb-12"
           required
-          onChange={(value) => setFormData({ ...formData, content: value })}
-        />
+          onChange={(value) =>{ setFormData(prevData=>({ ...prevData, content: value }))}}
+          value={formData.content}
+          />
         <Button
           type="submit"
           gradientDuoTone="purpleToPink"
           onClick={handleSubmit}
         >
-          Submit{" "}
+          Update Post
         </Button>
       </form>
-      {errorPublish && (
-        <Alert color={"failure"} className=" my-4">
-          {errorPublish}
-        </Alert>
-      )}
+      {errorUpdate && <Alert color={"failure"}>{errorUpdate}</Alert>}
     </div>
   );
 }
