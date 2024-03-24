@@ -34,6 +34,7 @@ function SignUp() {
   if (res.ok) {
     navigate("/")
     dispatch(signinSuccess(data))
+    
   }
     } catch (error) {
      dispatch(signinFailure(error.message))

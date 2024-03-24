@@ -84,6 +84,7 @@ export default function DashPost() {
     {   showMore && (
       <button onClick={handleShowMore} className='text-teal-400 py-7 w-full self-center text-sm'>Show More</button>
     )}
+
     <Modal show={showModal} onClose={()=>setShowModal(false)} popup size={"md"}>
       <Modal.Header/>
       <Modal.Body>
@@ -101,3 +102,5 @@ export default function DashPost() {
     </>
   )
 }
+
+

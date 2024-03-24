@@ -1,6 +1,7 @@
 import { errorHandler } from "../utils/error.js";
 import bcryptjs from "bcryptjs";
 import User from "../models/user.models.js";
+import e from "express";
 
 // this is for the checking the dummy api is working or not it has no role in our project 
 export const testApi = (req, res) => {
@@ -97,16 +98,33 @@ export const signOut = async (req,res)=>{
 }
 
 export const getUser = async (req,res,next)=>{
-  if (!req.user.isAdmin) {
+  if (!req.user.isAdmin || req.params.userId !== req.user.id) {
     return next(errorHandler(403,"Your are not allowed to see these users"))
   }
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.sortDirection === "des" ?1:-1;
-    const users = await User.find()
-
+    const users = await User.find().skip(startIndex).limit(limit).sort({createdAt:sortDirection}).select("-password");
+    const nowDate = new Date();
+    const lastMonthUser = new Date(nowDate.getFullYear(),nowDate.getMonth()-1,nowDate.getDate())
+    const countLastMonthUser = await User.countDocuments({createdAt:{ $gte:lastMonthUser}})
+    const totalUser = await User.countDocuments();
+    res.status(200).json({users,countLastMonthUser,totalUser})
   } catch (error) {
     next(error)
   }
+}
+
+
+export const deleteUserByAdmin = async ( req,res,next)=>{
+ if (!req.user.isAdmin || req.params.adminId !== req.user.id) {
+  return next(errorHandler(403,"You are not allowed to do this "))
+ }
+ try {
+  await   User.findByIdAndDelete(req.params.userId);
+  return res.status(200).json({message:"user is deleted successfully"})
+ } catch (error) {
+  next(error)
+ }
 }

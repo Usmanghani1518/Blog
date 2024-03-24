@@ -28,6 +28,7 @@ function App() {
           <Route element={<AdminProtectedRoute />}>
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/update-post/:postId" element={<Update />} />
+
           </Route>
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/SignIn" element={<SignIn />} />

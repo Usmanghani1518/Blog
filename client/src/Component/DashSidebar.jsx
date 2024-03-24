@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
-import { HiUser, HiArrowSmRight ,HiDocumentText} from "react-icons/hi";
+import { HiUser, HiArrowSmRight ,HiDocumentText ,HiOutlineUserGroup} from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { useUserSignOut } from "./DashProfile.jsx";
 import {useSelector} from "react-redux"
@@ -32,6 +32,7 @@ export default function DashboardSidebar() {
             </Sidebar.Item>
           </Link>
           {isAdmin &&
+          <>
           <Link to="/Dashbord?tab=posts">
             <Sidebar.Item
             icon={HiDocumentText}
@@ -42,6 +43,17 @@ export default function DashboardSidebar() {
              Posts
             </Sidebar.Item>
           </Link>
+          <Link to="/Dashbord?tab=users">
+            <Sidebar.Item
+            icon={HiOutlineUserGroup}
+            active={tab === "users" }
+            className=" cursor-pointer"
+            as="div"
+            >
+             Users
+            </Sidebar.Item>
+          </Link>
+          </>
           }
           <Sidebar.Item
             icon={HiArrowSmRight}
