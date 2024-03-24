@@ -95,3 +95,18 @@ export const deleteUser = async (req,res,next)=>{
 export const signOut = async (req,res)=>{
   res.clearCookie("access_token").status(200).json({message:"user  has been signed out successfully"});
 }
+
+export const getUser = async (req,res,next)=>{
+  if (!req.user.isAdmin) {
+    return next(errorHandler(403,"Your are not allowed to see these users"))
+  }
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sortDirection === "des" ?1:-1;
+    const users = await User.find()
+
+  } catch (error) {
+    next(error)
+  }
+}

@@ -17,7 +17,7 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
-
+import {useSelector} from "react-redux"
 export default function update() {
   const [image, setImage] = useState(null);
   const [loadingImage, setloadingImage] = useState(false);
@@ -27,7 +27,8 @@ export default function update() {
   const [errorUpdate, seterrorUpdate] = useState(null);
   const navigate = useNavigate();
   const {postId} = useParams()
- 
+  const user = useSelector((state)=>state.user.currentUser);
+
   useEffect(() => {
     const fetchpost = async () => {
       const res = await fetch(`/api/post/getpost/?postId=${postId}`);
@@ -80,8 +81,8 @@ export default function update() {
     e.preventDefault();
     try {
       seterrorUpdate(null);
-      const res = await fetch("/api/post/create", {
-        method: "POST",
+      const res = await fetch(`/api/post/update-post/${user._id}/${formData._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -126,9 +127,9 @@ export default function update() {
             value={formData.category || ""}
           >
             <option value="uncategorized">Select and Option</option>
-            <option value="javascript">JavaScript</option>
-            <option value="react.js">React.js</option>
-            <option value="next.js">Next.js</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="React.Js">React.js</option>
+            <option value="Next.Js">Next.js</option>
           </Select>
         </div>
         <div className="flex flex-row gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">

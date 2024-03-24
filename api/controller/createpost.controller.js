@@ -12,6 +12,7 @@ export const CreatePost = async (req,res,next)=>{
     const newPost = new Post ({
         ...req.body,slug,userId:req.user.id
     });
+   
     try {
         const savedPost = await newPost.save();
         return res.status(200).json(savedPost)
@@ -65,3 +66,19 @@ export const deletePost = async (req,res,next)=>{
         next(error)
     }
 }
+
+export const updatePost  = async (req,res,next)=>{
+    if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+        return next(errorHandler(403,"You are not authorized to perform this action"));       
+    }
+    let update = await Post.findByIdAndUpdate(req.params.postId,{
+        $set:{
+            tittle:req.body.tittle,
+            content:req.body.content,
+            postImg:req.body.postImg,
+            category:req.body.category
+        }
+    },{new:true})
+    return res.status(200).json(update)
+}
+
