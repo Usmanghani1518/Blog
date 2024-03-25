@@ -12,6 +12,7 @@ import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import AdminProtectedRoute from "./Component/AdminProtectedRoute.jsx";
 import CreatePost from "./pages/CreatePost.jsx";
 import Update from "./pages/update.jsx";
+import Post from "./pages/Post.jsx";
 
 function App() {
   return (
@@ -28,8 +29,8 @@ function App() {
           <Route element={<AdminProtectedRoute />}>
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/update-post/:postId" element={<Update />} />
-
           </Route>
+          <Route path="/post/:postSlug" element={ <Post/>}/>
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/SignIn" element={<SignIn />} />
         </Routes>
