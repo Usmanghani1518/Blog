@@ -1,6 +1,8 @@
 import { Button, Spinner } from 'flowbite-react';
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import CallToAction from '../Component/CallToAction';
+import CommentSection from '../Component/CommentSection';
 
 export default function Post() {
     const {postSlug} = useParams();
@@ -13,7 +15,6 @@ export default function Post() {
         });
         const data = await res.json();
         if (res.ok) {
-            console.log(data.post[0]);
             setData(data.post[0])
             setLoading(false)
         }
@@ -35,6 +36,8 @@ export default function Post() {
         <span className='italic'>{(data?.content.length/1000).toFixed(0)} min read</span>
     </div>
     <div className=' max-w-2xl w-full p-3 mx-auto  post-content' dangerouslySetInnerHTML={{__html:data?.content}}></div>
+    <div className="max-w-4xl w-full mx-auto"><CallToAction category={data?.category}/></div>
+    <div className=""><CommentSection  postId={data._id}/></div>
    </main>
   )
 }

@@ -25,7 +25,6 @@ export default function DsahUser() {
         setUsers(data.users);
 
         if (data.totalUser > users.length) {
-          console.log("effect true");
           setShowMore(true);
         }
       }
