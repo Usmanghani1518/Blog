@@ -72,7 +72,7 @@ export default function DashPost() {
       <Table.Row  className=' bg-white dark:border-gray-700 dark:bg-gray-800' >
         <Table.Cell>{new Date(data.updatedAt).toLocaleDateString()}</Table.Cell>
            <Table.Cell className=' cursor-pointer'> <Link to={`/post/${data.slug}`}><img src={data.postImg} className='h-10 w-20 object-cover bg-gray-500'  alt="" /></Link></Table.Cell> 
-            <Table.Cell><Link className=' font-medium text-gray-900 dark:text-gray-200' to={`/post/${data.slug}`}>{data.tittle}</Link></Table.Cell>
+            <Table.Cell><Link className=' font-medium text-gray-900 dark:text-gray-200 ' to={`/post/${data.slug}`}>{data.tittle}</Link></Table.Cell>
             <Table.Cell>{data.category}</Table.Cell>
             <Table.Cell> <Link className=' text-teal-400 hover:underline font-medium' to={`/update-post/${data._id}`}> <span>Edit</span></Link></Table.Cell>
             <Table.Cell><span onClick={()=>{setShowModal(true); setPostId(data._id)}} className=' text-red-500 cursor-pointer hover:underline font-medium'>Delete</span></Table.Cell>

@@ -15,8 +15,9 @@ export const signup = async (req, res, next) => {
     return next(errorHandler(400, "All fields are required"));
   }
   const hashPassword = bcrypt.hashSync(password, 10);
+  const acceptableUsername = username.split(" ").join("-").toLowerCase()
   const newUser = new User({
-    username,
+    username:acceptableUsername,
     email,
     password: hashPassword,
   });
