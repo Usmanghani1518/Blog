@@ -25,45 +25,93 @@ export const createComment = async (req, res, next) => {
   }
 };
 
-export const getComment = async (req,res,next)=>{
-  if (req.user.id !== req.params.userId ) {
-    return next(errorHandler(403,"you are not allowed to see the comment"))
+export const getComment = async (req, res, next) => {
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(403, "you are not allowed to see the comment"));
   }
   const sortDirection = -1;
-  const startIndex = parseInt(req.query.startIndex )|| 0;
+  const startIndex = parseInt(req.query.startIndex) || 0;
   try {
-    const comment = await Comment.find({postId:req.params.postId}).populate({path:"owner",select:"-password"}).sort({createdAt:sortDirection}).limit(5).skip(startIndex)
-    const totalComments = await Comment.countDocuments({postId :req.params.postId})
-    return res.status(200).json({comment,totalComments})
+    const comment = await Comment.find({ postId: req.params.postId })
+      .populate({ path: "owner", select: "-password" })
+      .sort({ createdAt: sortDirection })
+      .limit(5)
+      .skip(startIndex);
+    const totalComments = await Comment.countDocuments({
+      postId: req.params.postId,
+    });
+    return res.status(200).json({ comment, totalComments });
   } catch (error) {
-    next(error)
-  }
-}
-
-
-export const likeComment = async (req, res, next) => {
-  try {
-      const comment = await Comment.findById(req.params.commentId);
-      if (!comment) {
-          return next(errorHandler(404, "There is no comment to like because the comment is deleted"));
-      }
-
-      const userIndex = comment.like.indexOf(req.user.id);
-      if (userIndex === -1) {
-        comment.numberOfLikes += 1;
-        comment.like.push(req.user.id);
-         
-      } else {
-      
-          comment.numberOfLikes -= 1;
-          comment.like.splice(userIndex, 1);
-      }
-
-      await comment.save(); // Save changes to the comment
-      res.status(200).json(comment);
-  } catch (error) {
-      next(error);
+    next(error);
   }
 };
 
+export const likeComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) {
+      return next(
+        errorHandler(
+          404,
+          "There is no comment to like because the comment is deleted"
+        )
+      );
+    }
 
+    const userIndex = comment.like.indexOf(req.user.id);
+    if (userIndex === -1) {
+      comment.numberOfLikes += 1;
+      comment.like.push(req.user.id);
+    } else {
+      comment.numberOfLikes -= 1;
+      comment.like.splice(userIndex, 1);
+    }
+
+    await comment.save();
+    res.status(200).json(comment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const editComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+
+    if (!comment) {
+      return next(errorHandler(404, "This comment is not found"));
+    }
+    if (req.user.id !== comment.owner && !req.user.isAdmin) {
+      return next(errorHandler(403, "you are not allowed to do this action"));
+    }
+    const { content } = req.body;
+    if (!content) {
+      return next(errorHandler(403, "There is nothing to updade "));
+    }
+
+    const updatedComment = await Comment.findByIdAndUpdate(
+      req.params.commentId,
+      { content: content },
+      { new: true }
+    );
+    res.status(200).json(updatedComment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) {
+      next(errorHandler(404, "There is no comment to update"));
+    }
+    if (req.user.id !== comment.owner && !req.user.isAdmin) {
+      next(errorHandler(403, "You are not allowed to do this action"));
+    }
+    await Comment.findByIdAndDelete(req.params.commentId);
+    res.status(200).json({ message: "This comment is deleted now " });
+  } catch (error) {
+    next(error);
+  }
+};

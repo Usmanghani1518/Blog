@@ -32,8 +32,8 @@ function SignUp() {
       }
 
   if (res.ok) {
-    navigate("/")
     dispatch(signinSuccess(data))
+    navigate("/")
     
   }
     } catch (error) {
