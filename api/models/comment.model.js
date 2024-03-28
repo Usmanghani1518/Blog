@@ -16,6 +16,10 @@ const commentSchema = new Schema ({
     like:{
         type:Array,
         default:[]
+    },
+    numberOfLikes:{
+        type:Number,
+        default:0
     }
 },{timestamps:true});
 

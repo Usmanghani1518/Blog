@@ -5,11 +5,11 @@ import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { signinSuccess } from '../redux/user/userSlice.js';
 import { useNavigate } from 'react-router-dom';
+
 export default function OAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const auth = getAuth(app)
-  
   const handleClick = async ()=>{
     const provider =  new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
@@ -24,7 +24,7 @@ export default function OAuth() {
           email:resultfromGoogle.user.email,
           avatar:resultfromGoogle.user.photoURL
         })
-      });
+      })
    
       const data = await res.json()
       if (res.ok) {

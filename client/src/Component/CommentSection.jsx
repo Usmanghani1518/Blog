@@ -2,23 +2,29 @@ import { Button, Textarea } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import moment from "moment";
 import { formatDistanceToNow } from "date-fns";
+import { AiFillLike } from "react-icons/ai";
 
 export default function CommentSection({ postId }) {
   const user = useSelector((state) => state.user.currentUser);
   const [comment, setComment] = useState("");
   const [commentData, setCommentData] = useState([]);
-  console.log(postId);
+  const [totalComment,settotalComment] = useState(null);
+  const [showMore,setShowMore] = useState(false);
+
 
   useEffect(() => {
     (async () => {
       const res = await fetch(`/api/comment/get-comment/${user._id}/${postId}`);
       const data = await res.json();
       if (res.ok) {
-        setCommentData(data);
+        setCommentData(data.comment);
+        settotalComment(data.totalComments)
+        if (data.totalComments > data.comment.length) {
+          setShowMore(true)
+        }
       }
-    })();
+    })()
   }, [postId]);
 
   const handleSubmit = async (e) => {
@@ -32,17 +38,51 @@ export default function CommentSection({ postId }) {
     });
     const data = await res.json();
     if (res.ok) {
-      console.log(data);
       setComment("");
+      const owner = {avatar:user.avatar,username:user.username}
+      data.owner= owner
+      setCommentData([data,...commentData])
     }
   };
+  const handleShowMore = async ()=>{
+   const startInex = commentData.length;
+   const res = await fetch(`/api/comment/get-comment/${user._id}/${postId}?startIndex=${startInex}`);
+   const data = await res.json()
+   if (res.ok) {
+   
+    setCommentData([...commentData,...data.comment]);
+    if (data.comment.length < 5) {
+      setShowMore(false)
+    }
+   }
 
+    
+  }
+
+  const handleLike = async(commentId)=>{
+     const res =  await fetch(`/api/comment/like-comment/${commentId}`,{
+      method:"PUT"
+     });
+     const data = await res.json()
+     if (res.ok) {
+     const newData=   commentData.map((comment)=>{
+          if (comment._id === commentId) {
+           comment.like= data.like;
+           comment.numberOfLikes= data.numberOfLikes
+          }
+        return comment
+       })
+      setCommentData(newData)
+
+     }
+  }
+ 
   return (
     <div className="max-w-2xl w-full mx-auto">
       {user ? (
         <div className="flex items-center gap-1 my-5 text-gray-500">
           <p>Signed in as:</p>
-          <img className="w-7 h-7 rounded-full" src={user.avatar} alt="" />
+          <img className="w-7 h-7 rounded-full bg-gray-400" src={user.avatar} alt="" />
           <Link
             className="text-teal-400 hover:underline"
             to="/Dashbord?tab=profile"
@@ -77,11 +117,10 @@ export default function CommentSection({ postId }) {
             </div>
           </form>
           <p className="font-semibold my-3">
-            Commetents{" "}
-            <span className="border border-gray-400 px-3 py-1 text-sm">
-              {" "}
-              {commentData.length > 0 ? commentData.length : "0"}{" "}
-            </span>
+              {totalComment > 0 ?
+              ( <>Comments <span className=" border-2 border-gray-400 px-2">  {totalComment}</span>  </>)
+               : (<span className="font-semibold mx-auto">No Comment Yet</span>)}
+            
           </p>
           {user &&
             commentData?.map((data) => (
@@ -107,10 +146,19 @@ export default function CommentSection({ postId }) {
                       })}
                     </span>
                   </div>
-                  <p className="text-gray-500">{data.content}</p>
+                  <p className="text-gray-500 mb-3">{data.content}</p>
+                 <div className="flex items-center gap-2 pt-2 text-gray-400 border-t max-w-fit dark:border-gray-700 text-xs">
+                  <button type="button" onClick={()=>handleLike(data._id)} className={`text-gray-400 hover:text-blue-500 ${data.like.includes(user._id) && "!text-blue-500"} `}><AiFillLike className="text-lg"/></button>
+                  <p>{data.like.length > 0 && data.numberOfLikes + " "+(data.numberOfLikes == 1?"like":"likes")}</p>
+                  <p className="cursor-pointer hover:underline">Edit</p>
+                  <p className="cursor-pointer hover:underline">Delete</p>
+                 </div>
                 </div>
               </div>
             ))}
+            {
+              showMore && <p className="my-3 pt-2 text-teal-300 text-center"><span onClick={handleShowMore} className="cursor-pointer">Read More</span> </p>
+            }
         </div>
       )}
     </div>

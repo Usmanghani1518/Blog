@@ -12,6 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {toggleTheme} from "../redux/theme/themeSlicer.js"
 import { useUserSignOut } from "./DashProfile.jsx";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function Header() {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -51,7 +52,7 @@ export default function Header() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="user" img={currentUser.avatar} rounded />}
+            label={currentUser.avatar?(<Avatar className="bg-gray-300 rounded-full" alt="Usr" img={currentUser.avatar} rounded  />):(<FaUserCircle/>)}
           >
             <Dropdown.Header className="">
               <span className="block text-sm">@{currentUser.username}</span>
