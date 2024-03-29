@@ -115,3 +115,19 @@ export const deleteComment = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const getAllPostComments = async (req,res,next)=>{
+  if (!req.user.isAdmin) {
+    return next(errorHandler(403,"You are not allowed to see this data "))
+  }
+  try {
+    const limit = parseInt(req.query.limit ) || 9;
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const direction = req.query.direction ==="des" ? 1:-1;
+    const comment = await Comment.find().skip(startIndex).sort({updatedAt:direction}).limit(limit);
+    res.status(200).json(comment)
+  } catch (error) {
+    
+  }
+}

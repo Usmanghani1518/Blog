@@ -46,6 +46,7 @@ export default function CommentSection({ postId }) {
       const owner = { avatar: user.avatar, username: user.username };
       data.owner = owner;
       setCommentData([data, ...commentData]);
+      settotalComment(totalComment+1)
     }
   };
   const handleShowMore = async () => {
@@ -61,7 +62,6 @@ export default function CommentSection({ postId }) {
       }
     }
   };
-
   const handleLike = async (commentId) => {
     const res = await fetch(`/api/comment/like-comment/${commentId}`, {
       method: "PUT",
@@ -91,6 +91,7 @@ export default function CommentSection({ postId }) {
       const newComment = commentData.map((comment) => {
         if (comment._id === editing) {
           comment.content = data.content;
+         
         }
         return comment;
       });
@@ -100,7 +101,6 @@ export default function CommentSection({ postId }) {
   };
 
    const handleDeleteComment = async ()=>{
-    console.log(deletId);
     setShowModal(false);
     const res= await fetch(`/api/comment/delete-comment/${deletId}`,{
       method:"DELETE"

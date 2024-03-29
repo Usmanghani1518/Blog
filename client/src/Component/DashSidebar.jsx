@@ -4,6 +4,7 @@ import { HiUser, HiArrowSmRight ,HiDocumentText ,HiOutlineUserGroup} from "react
 import { Link, useLocation } from "react-router-dom";
 import { useUserSignOut } from "./DashProfile.jsx";
 import {useSelector} from "react-redux"
+import { BiSolidCommentDetail } from "react-icons/bi";
 export default function DashboardSidebar() {
   const location = useLocation();
   const {isAdmin} = useSelector((state)=>state.user.currentUser);
@@ -51,6 +52,16 @@ export default function DashboardSidebar() {
             as="div"
             >
              Users
+            </Sidebar.Item>
+          </Link>
+          <Link to="/Dashbord?tab=comments">
+            <Sidebar.Item
+            icon={BiSolidCommentDetail}
+            active={tab ==="comments"}
+            className="cursor-pointer"
+            as={"div"}
+            >
+              Comments
             </Sidebar.Item>
           </Link>
           </>

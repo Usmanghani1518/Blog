@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import CallToAction from '../Component/CallToAction';
 import CommentSection from '../Component/CommentSection';
+import PostCard from './PostCard';
 
 export default function Post() {
     const {postSlug} = useParams();
     const [data,setData] = useState({})
-    const [loading,setLoading] = useState(true)
+    const [loading,setLoading] = useState(true);
+    const[recentPost,setRecentPost]=useState([])
     useEffect(()=>{
     (async()=>{
         const res  = await fetch(`/api/post/getpost?slug=${postSlug}`,{
@@ -20,6 +22,16 @@ export default function Post() {
         }
     })()
     },[postSlug])
+
+    useEffect(()=>{
+        (async()=>{
+            const res = await fetch("/api/post/getpost?limit=3")
+            const data = await res.json()
+            if (res.ok) {
+                setRecentPost(data.post)
+            }
+        })()
+    },[])
     if (loading) {
         return  <div className='flex justify-center min-h-screen items-center'><Spinner size={"xl"}/></div>
     }
@@ -38,6 +50,15 @@ export default function Post() {
     <div className=' max-w-2xl w-full p-3 mx-auto  post-content' dangerouslySetInnerHTML={{__html:data?.content}}></div>
     <div className="max-w-4xl w-full mx-auto"><CallToAction category={data?.category}/></div>
     <div className=""><CommentSection  postId={data._id}/></div>
+    <div className="flex flex-col justify-center">
+        <h1 className='text-center text-2xl font-semibold'>Recent Articles</h1>
+        <div className="flex flex-wrap gap-5 justify-center mt-5">
+
+        {
+            recentPost && (recentPost.map((post)=><PostCard key={post._id} post={post}/>))
+        }
+        </div>
+    </div>
    </main>
   )
 }

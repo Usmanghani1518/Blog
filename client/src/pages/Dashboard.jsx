@@ -4,6 +4,7 @@ import DashboardSidebar from "../Component/DashSidebar.jsx";
 import DashProfile from "../Component/DashProfile.jsx";
 import DashPost from "./DashPost.jsx";
 import DsahUser from "./DsahUser.jsx";
+import DashComment from "../Component/DashComment.jsx";
 
 function Dashboard() {
   const location = useLocation()
@@ -16,7 +17,6 @@ function Dashboard() {
     }
     
   },[location.search])
-  
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       <div className="md:w-56">
@@ -27,6 +27,7 @@ function Dashboard() {
       {tab==="profile" && <DashProfile/>}
       {tab==="posts" && <DashPost/>}
       {tab==="users" && <DsahUser/>}
+      {tab==="comments" && <DashComment/>}
 
     </div>
   )

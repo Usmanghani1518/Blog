@@ -104,7 +104,7 @@ export const getUser = async (req,res,next)=>{
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.sortDirection === "des" ?1:-1;
+    const sortDirection = req.query.sortDirection === "des" ? 1:-1;
     const users = await User.find().skip(startIndex).limit(limit).sort({createdAt:sortDirection}).select("-password");
     const nowDate = new Date();
     const lastMonthUser = new Date(nowDate.getFullYear(),nowDate.getMonth()-1,nowDate.getDate())

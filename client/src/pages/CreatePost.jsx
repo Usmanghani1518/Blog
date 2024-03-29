@@ -54,6 +54,7 @@ export default function CreatePost() {
           setFormData({ ...formData, postImg: url });
           setloadingImage(false);
           setErrorImage(false);
+          setImage(null)
         });
       }
     );
@@ -157,8 +158,9 @@ export default function CreatePost() {
           type="submit"
           gradientDuoTone="purpleToPink"
           onClick={handleSubmit}
+          disabled={loadingImage}
         >
-          Submit{" "}
+        {loadingImage ?(<><Spinner size={"md"} value="Uploading Image"/> Uploading Image...</>):"Submit"}  
         </Button>
       </form>
       {errorPublish && (
