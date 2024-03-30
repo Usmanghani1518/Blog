@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {useSelector} from "react-redux"
 import {Button, Table} from "flowbite-react"
 import {Link} from "react-router-dom"
+import { BsDatabaseExclamation } from "react-icons/bs";
 import {HiOutlineUserGroup,HiArrowNarrowUp ,HiAnnotation,HiDocument} from "react-icons/hi"
 export default function DashboardCom() {
     const {currentUser} = useSelector((state)=>state.user)
@@ -49,7 +50,6 @@ export default function DashboardCom() {
       fetchComment()
      }
     },[currentUser])
-    console.log(post);
   return (
     <div className='p-3 md:mx-auto'>
         <div className="flex flex-wrap gap-4">
@@ -64,7 +64,7 @@ export default function DashboardCom() {
             <div className="flex gap-2 text-sm">
               <span className='flex items-center text-green-500'>
               {lastMonthUser >0 && <HiArrowNarrowUp/>}
-              <p className={`${lastMonthUser <=0 && "text-red-500"}`}>{lastMonthPost}</p>
+              <p className={`${lastMonthUser <=0 && "text-red-500"}`}>{lastMonthUser}</p>
               </span>
               <span className='text-gray-500'>
                 Last Month
@@ -83,7 +83,7 @@ export default function DashboardCom() {
               <span className='flex items-center text-green-500'>
 
               {lastMonthComment >0 && <HiArrowNarrowUp/>}
-              <p className={`${lastMonthComment <=0 && "text-red-500"}`}>{lastMonthPost}</p>
+              <p className={`${lastMonthComment <=0 && "text-red-500"}`}>{lastMonthComment}</p>
               </span>
               <span className='text-gray-500'>
                 Last Month
@@ -117,7 +117,7 @@ export default function DashboardCom() {
           <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
             <div className="flex justify-between p-3 text-sm font-semibold">
               <h1 className='p-3'>Recent Users</h1>
-              <Link to={"/Dashbord?tab=users"}> <Button outline gradientDuoTone={"purpleToPink"}>See All</Button></Link>
+             {user.length >0 && <Link to={"/Dashbord?tab=users"}> <Button outline gradientDuoTone={"purpleToPink"}>See All</Button></Link>}
             </div>
             <Table hoverable>
               <Table.Head>
@@ -145,10 +145,10 @@ export default function DashboardCom() {
           <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
             <div className="flex justify-between p-3 text-sm font-semibold">
               <h1 className='p-3'>Recent Comments</h1>
-              <Link to={"/Dashbord?tab=comments"}> <Button outline gradientDuoTone={"purpleToPink"}>See All</Button></Link>
+             {comment.length >0 && <Link to={"/Dashbord?tab=comments"}> <Button outline gradientDuoTone={"purpleToPink"}>See All</Button></Link>}
 
             </div>
-            <Table hoverable>
+            {comment.length >0?(<Table hoverable>
               <Table.Head>
 
               <Table.HeadCell>Comment Content</Table.HeadCell>
@@ -168,15 +168,20 @@ export default function DashboardCom() {
                 )
               }
               </Table.Body>
-            </Table>
+            </Table>):(<>
+            <BsDatabaseExclamation className='text-4xl self-center'/>
+            <h1 className='text-2xl p-2 text-center text-gray-500'>There is no Comments</h1>
+            </>)}
           </div>
 
           <div className="flex flex-col w-full md:w-auto shadow-md p-2 rounded-md dark:bg-gray-800">
             <div className="flex justify-between p-3 text-sm font-semibold">
-              <h1 className='p-3'>Recent Posts</h1>
-              <Link to={"/Dashbord?tab=posts"}> <Button outline gradientDuoTone={"purpleToPink"}>See All</Button></Link>
+              <h1 className='p-3 font-semibold'>Recent Posts</h1>
+              {post.length >0 &&<Link to={"/Dashbord?tab=posts"}> <Button outline gradientDuoTone={"purpleToPink"}>See All</Button></Link>}
 
             </div>
+            { 
+            post.length>0?(
             <Table hoverable>
               <Table.Head>
 
@@ -199,7 +204,11 @@ export default function DashboardCom() {
                 )
               }
               </Table.Body>
-            </Table>
+            </Table>):(<>
+            <BsDatabaseExclamation className='text-4xl self-center'/>
+            <h1 className='text-2xl p-2 text-center text-gray-500'>There is no Post</h1>
+            </>)
+}
           </div>
         </div>
     </div>

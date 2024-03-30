@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {useSelector} from "react-redux"
 import { PiWarningBold } from "react-icons/pi";
+import {BsDatabaseExclamation} from "react-icons/bs"
 import { Button, Modal, Table} from "flowbite-react"
 import {Link} from "react-router-dom"
 export default function DashPost() {
@@ -17,7 +18,7 @@ export default function DashPost() {
       if (res.ok) {
         setPosts(data.post)
       }
-      if (data.post.length <9 ) {
+      if (data.post.length < 9 ) {
         setShowMore(false)
       }
       if (!res.ok) {
@@ -56,7 +57,7 @@ export default function DashPost() {
   }
   return (
     <>
-    <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700 dark:scrollbar-track-slate-500'>
+   {posts.length  >0?( <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700 dark:scrollbar-track-slate-500'>
     <Table hoverable className='shadow-md' >
     <Table.Head>
       <Table.HeadCell>Date Updated</Table.HeadCell>
@@ -98,7 +99,11 @@ export default function DashPost() {
         </div>
       </Modal.Body>
     </Modal>
-    </div>
+    </div>):(
+    <>
+    <div className='text-8xl self-center mx-auto'><BsDatabaseExclamation  className=' '/></div>
+    <p className='text-4xl md:text-8xl self-center mx-auto p-4 text-gray-500'>There is no Data</p>
+    </>)}
     </>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {Button, Modal, Table} from "flowbite-react"
 import {PiWarningBold} from "react-icons/pi"
+import {BsDatabaseExclamation} from "react-icons/bs"
 export default function DashComment() {
 const [comment,setComment] = useState([]);
 const [showModal,setShowModal] = useState(false)
@@ -27,7 +28,8 @@ const [commentId,setCommentId] = useState(null)
    }
  }
   return (
-    comment?
+    
+    comment.length >0?
    ( <div className=' table-auto md:mx-auto p-3 scrollbar overflow-x-scroll scrollbar-track-slate-100 scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700 dark:scrollbar-track-slate-500'>
         <Table hoverable className='overflow-x-scroll'>
           <Table.Head>
@@ -77,9 +79,9 @@ const [commentId,setCommentId] = useState(null)
             </Modal.Body>
         </Modal>
     </div>):(
-      <div className='flex justify-center items-center min-h-screen text-6xl mx-auto text-gray-500'>
-        There is no commment Yet 
-      </div>
-    )
+    <>
+    <div className='text-8xl self-center mx-auto'><BsDatabaseExclamation  className=' '/></div>
+    <p className='text-4xl md:text-8xl self-center mx-auto p-4 text-gray-500'>There is no Data</p>
+    </>)
   )
 }
