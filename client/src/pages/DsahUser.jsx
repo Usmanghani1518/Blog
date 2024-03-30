@@ -79,7 +79,7 @@ export default function DsahUser() {
                   {new Date(user.createdAt).toLocaleDateString()}
                 </Table.Cell>
                 <Table.Cell>
-                  <img className="h-12 w-12 rounded-full" src={user.avatar} />
+                  <img className="h-12 w-12 rounded-full bg-gray-500" src={user.avatar} />
                 </Table.Cell>
                 <Table.Cell>{user.username}</Table.Cell>
                 <Table.Cell>{user.email}</Table.Cell>

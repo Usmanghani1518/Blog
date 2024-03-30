@@ -3,14 +3,14 @@ import {Button, Modal, Table} from "flowbite-react"
 import {PiWarningBold} from "react-icons/pi"
 export default function DashComment() {
 const [comment,setComment] = useState([]);
-const [showModal,setShowModal] = useState(true)
+const [showModal,setShowModal] = useState(false)
 const [commentId,setCommentId] = useState(null)
   useEffect(()=>{
       (async()=>{
         const res = await fetch("/api/comment/get-all-post-comment")
         const data = await res.json()
         if (res.ok) {
-          setComment(data)
+          setComment(data.comment)
         }
       })()
   },[])
@@ -27,7 +27,7 @@ const [commentId,setCommentId] = useState(null)
    }
  }
   return (
-    comment.length >0 ?
+    comment?
    ( <div className=' table-auto md:mx-auto p-3 scrollbar overflow-x-scroll scrollbar-track-slate-100 scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700 dark:scrollbar-track-slate-500'>
         <Table hoverable className='overflow-x-scroll'>
           <Table.Head>

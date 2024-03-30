@@ -126,7 +126,11 @@ export const getAllPostComments = async (req,res,next)=>{
     const startIndex = parseInt(req.query.startIndex) || 0;
     const direction = req.query.direction ==="des" ? 1:-1;
     const comment = await Comment.find().skip(startIndex).sort({updatedAt:direction}).limit(limit);
-    res.status(200).json(comment)
+    const now = new Date()
+    const lastMonth = new Date(now.getFullYear(),now.getMonth()-1,now.getDate())
+    const lastMonthComment = await Comment.countDocuments({createdAt:{$gte:lastMonth}})
+    const totalComment = await Comment.countDocuments();
+    res.status(200).json({comment,totalComment,lastMonthComment})
   } catch (error) {
     
   }

@@ -23,6 +23,9 @@ export const CreatePost = async (req,res,next)=>{
 }
 
 export const getPost = async (req,res,next)=>{
+    if (!req.user.isAdmin && req.user.id !== req.query.userId) {
+        return next(errorHandler(403,"You are not allowed to see the posts"))
+    }
     try {
         const startIndex= parseInt(req.query.startIndex)|| 0 ;
         const limit = parseInt(req.query.limit) || 9 ;
