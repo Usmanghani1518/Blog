@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -8,7 +8,7 @@ import {
 } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon,FaSun } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {toggleTheme} from "../redux/theme/themeSlicer.js"
 import { useUserSignOut } from "./DashProfile.jsx";
@@ -17,8 +17,27 @@ import { FaUserCircle } from "react-icons/fa";
 export default function Header() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const {theme} = useSelector((state)=>state.theme)
+  const[searchTerm,setSearchTerm] = useState("")
   const dispatch = useDispatch();
   const path = useLocation().pathname;
+  const location = useLocation();
+  const navigate = useNavigate()
+   useEffect(()=>{
+    const urlPrams=new  URLSearchParams(location.search);
+    const searchTermUrl = urlPrams.get("searchTerm")
+    if (searchTermUrl) {
+      setSearchTerm(searchTermUrl)
+    }
+   },[location.search])
+   const handleSubmitSearch = (e)=>{
+    e.preventDefault();
+    const urlPrams = new URLSearchParams(location.search);
+      urlPrams.set("searchTerm",searchTerm)
+      const serchQuery =urlPrams.toString()
+      navigate(`/search?${serchQuery}`)
+
+
+   }
   const hadleSignOut = useUserSignOut()
   return (
     <Navbar className="border-b-2">
@@ -31,14 +50,16 @@ export default function Header() {
         </span>
         Blog
       </Link>
-      <form>
+      <form onSubmit={handleSubmitSearch}>
         <TextInput
           placeholder="Search..."
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"
+          onChange={(e)=>setSearchTerm(e.target.value)}
+          value={searchTerm}
         />{" "}
       </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
+      <Button type="submit" className="w-12 h-10 lg:hidden " color="gray" pill>
         <AiOutlineSearch />
       </Button>
       <div className="flex gap-2 md:order-2">

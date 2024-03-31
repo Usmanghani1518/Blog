@@ -14,6 +14,7 @@ import CreatePost from "./pages/CreatePost.jsx";
 import Update from "./pages/update.jsx";
 import Post from "./pages/Post.jsx";
 import ScrollTop from "./Component/ScrollTop.jsx";
+import Search from "./pages/Search.jsx";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/Dashbord" element={<Dashboard />} />
             <Route path="/Projects" element={<Projects />} />
+            <Route path="/search" element={<Search/>}/>
           </Route>
           <Route element={<AdminProtectedRoute />}>
             <Route path="/create-post" element={<CreatePost />} />
