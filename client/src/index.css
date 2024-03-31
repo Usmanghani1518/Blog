@@ -42,3 +42,11 @@
 .post-content ul{
     list-style: disc;
 }
+@keyframes moveUpDown {
+    0%, 100% {
+      transform: translateY(30%);
+    }
+    50% {
+      transform: translateY(70%);
+    }
+  }

@@ -32,13 +32,14 @@ export default function Post() {
             }
         })()
     },[])
+    console.log(data);
     if (loading) {
         return  <div className='flex justify-center min-h-screen items-center'><Spinner size={"xl"}/></div>
     }
   return (
    <main className=' min-h-screen p-3 flex flex-col mx-w-6xl mx-auto'>
     <h1 className=' text-3xl lg:text-4xl text-center mt-10 p-3 max-w-2xl w-full mx-auto font-serif  '>{data && data.tittle}</h1>
-    <Link className='self-center mt-5' to={`/search?category=${data?.category}`}>
+    <Link className='self-center mt-5' to={`/search?category=${data?.category.toLowerCase()}`}>
         <Button color='gray' size={"xs"} pill >{data?.category}</Button>
 
     </Link>

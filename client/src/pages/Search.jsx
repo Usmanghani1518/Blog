@@ -37,7 +37,7 @@ export default function Search() {
       if (res.ok) {
         setPost(data.post)
         setLoading(false)
-        if (data.post.length <=9) {
+        if (data.post.length ===9) {
           setShowMore(true)
         }
       }
@@ -102,7 +102,7 @@ export default function Search() {
             <label className="whitespace-nowrap font-semibold">
               Search Term:
             </label>
-            <Select id="order" onChange={handleChange} value={sidebarData.sort||""}>
+            <Select id="order" onChange={handleChange} value={sidebarData.sort}>
               <option value="asc">Latest</option>
               <option value="des">Oldest</option>
             </Select>
@@ -112,7 +112,7 @@ export default function Search() {
             <Select
               id="category"
               onChange={handleChange}
-              value={sidebarData.category ||""}
+              value={sidebarData.category }
             >
               <option value="uncategorized">Uncategorized</option>
               <option value="react.js">React</option>
