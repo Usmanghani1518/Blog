@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import { PiWarningBold } from "react-icons/pi";
-import {BsDatabaseExclamation} from "react-icons/bs"
+import noData from "../assets/search.jpg"
 export default function DsahUser() {
   const [showerror, setShowError] = useState(null);
   const [users, setUsers] = useState([]);
@@ -64,7 +64,7 @@ export default function DsahUser() {
   console.log("lenght" +users.length);
   return (
     <>
-      {users.length >= 0 ?(<div className=" overflow-x-scroll scrollbar md:mx-auto my-4">
+      {users.length > 0 ?(<div className=" overflow-x-scroll scrollbar md:mx-auto my-4">
         <Table hoverable className="">
           <Table.Head>
             <Table.HeadCell>Date Created</Table.HeadCell>
@@ -140,8 +140,7 @@ export default function DsahUser() {
         </Modal>
       </div>):(
     <>
-    <div className='text-8xl self-center mx-auto'><BsDatabaseExclamation  className=' '/></div>
-    <p className='text-4xl md:text-8xl self-center mx-auto p-4 text-gray-500'>There is no Data</p>
+        <div className='text-8xl self-center mx-auto top-0'><img className='object-cover max-h-screen' src={noData} alt="" /></div>
     </>)}
     </>
   );

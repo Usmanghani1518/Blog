@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap');
+
+/* Apply the default font to all elements */
+.about {
+    font-family: "Poppins", sans-serif;
+    line-height: 2.5rem;
+}
+
+ .about p {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.about h2 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}

@@ -62,7 +62,7 @@ function Testimonials() {
           {testimonialsData.map(testimonial => (
             <div key={testimonial.id} className="flex justify-center">
               <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg max-w-sm mx-2 flex flex-col justify-between">
-                <p className="text-lg mb-2">{testimonial.quote}</p>
+                <p className="text-lg mb-2 line-clamp-3">{testimonial.quote}</p>
                 <div className="flex items-center">
                   <p className="text-pink-600">- {testimonial.name}</p>
                   <div className="flex ml-2">

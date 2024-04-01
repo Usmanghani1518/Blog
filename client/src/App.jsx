@@ -15,6 +15,7 @@ import Update from "./pages/update.jsx";
 import Post from "./pages/Post.jsx";
 import ScrollTop from "./Component/ScrollTop.jsx";
 import Search from "./pages/Search.jsx";
+import SignInIs from "./Component/SignInIs.jsx";
 
 function App() {
   return (
@@ -35,8 +36,11 @@ function App() {
             <Route path="/update-post/:postId" element={<Update />} />
           </Route>
           <Route path="/post/:postSlug" element={ <Post/>}/>
+          <Route element={<SignInIs/>}>
+
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/SignIn" element={<SignIn />} />
+          </Route>
         </Routes>
         <FooterCom />
       </BrowserRouter>

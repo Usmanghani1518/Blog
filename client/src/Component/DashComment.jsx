@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {Button, Modal, Table} from "flowbite-react"
 import {PiWarningBold} from "react-icons/pi"
 import {BsDatabaseExclamation} from "react-icons/bs"
+import noData from "../assets/search.jpg"
 export default function DashComment() {
 const [comment,setComment] = useState([]);
 const [showModal,setShowModal] = useState(false)
@@ -80,8 +81,9 @@ const [commentId,setCommentId] = useState(null)
         </Modal>
     </div>):(
     <>
-    <div className='text-8xl self-center mx-auto'><BsDatabaseExclamation  className=' '/></div>
-    <p className='text-4xl md:text-8xl self-center mx-auto p-4 text-gray-500'>There is no Data</p>
+
+    <div className='text-8xl self-center mx-auto top-0'><img className='object-cover max-h-screen' src={noData} alt="" /></div>
+    {/* <p className='text-4xl md:text-8xl self-center mx-auto p-4 text-gray-500'>There is no Data</p> */}
     </>)
   )
 }
