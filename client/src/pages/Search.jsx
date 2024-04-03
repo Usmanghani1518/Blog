@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation ,useNavigate} from "react-router-dom";
 import serchImage from "../assets/search.jpg"
 import PostCard from "./PostCard.jsx"
+import { useSelector } from "react-redux";
 
 export default function Search() {
   const [sidebarData, setSideBarData] = useState({
@@ -10,6 +11,7 @@ export default function Search() {
     sort: "asc",
     category: "",
   });
+  const user = useSelector((state)=>state.user.currentUser)
   const location = useLocation();
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,7 +34,7 @@ export default function Search() {
     }
     (async () => {
       const search = urlPrams.toString();
-      const res = await fetch(`/api/post/getpost?${search}`);
+      const res = await fetch(`/api/post/getpost/${user._id}?${search}`);
       const data = await res.json();
       if (res.ok) {
         setPost(data.post)
@@ -81,6 +83,7 @@ export default function Search() {
       }
     }
   }
+
   return (
     <div className="flex flex-col md:flex-row">
       <div className="p-7 border-b md:border-r md:min-h-screen border-gray-500">

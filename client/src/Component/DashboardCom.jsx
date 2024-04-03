@@ -15,6 +15,7 @@ export default function DashboardCom() {
     const[lastMonthUser,setLastMonthUser] = useState(0);
     const[lastMonthPost,setLastMonthPost]=useState(0);
     const[lastMonthComment,setLastMonthComment] = useState(0)
+  
     useEffect(()=>{
      const fetchUser= async()=>{
       const res= await fetch(`/api/get-user/${currentUser._id}/?limit=5`);
@@ -26,7 +27,7 @@ export default function DashboardCom() {
       }
      }
      const fetchPost = async()=>{
-      const res= await  fetch("/api/post/getpost?limit=5");
+      const res= await  fetch(`/api/post/getpost/${currentUser._id}?limit=5`);
       const data = await res.json();
       if (res.ok) {
         setPost(data.post)
@@ -148,7 +149,7 @@ export default function DashboardCom() {
              {comment.length >0 && <Link to={"/Dashbord?tab=comments"}> <Button outline gradientDuoTone={"purpleToPink"}>See All</Button></Link>}
 
             </div>
-            {comment.length >0?(<Table hoverable>
+            {comment.length > 0?(<Table hoverable>
               <Table.Head>
 
               <Table.HeadCell>Comment Content</Table.HeadCell>

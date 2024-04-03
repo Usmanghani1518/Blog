@@ -4,17 +4,16 @@ import { Link, useParams } from 'react-router-dom'
 import CallToAction from '../Component/CallToAction';
 import CommentSection from '../Component/CommentSection';
 import PostCard from './PostCard';
-
+import { useSelector } from 'react-redux';
 export default function Post() {
     const {postSlug} = useParams();
     const [data,setData] = useState({})
     const [loading,setLoading] = useState(true);
     const[recentPost,setRecentPost]=useState([])
+    const user = useSelector((state)=>state.user.currentUser)
     useEffect(()=>{
     (async()=>{
-        const res  = await fetch(`/api/post/getpost?slug=${postSlug}`,{
-            method:"GET"
-        });
+        const res  = await fetch(`/api/post/getpost/${user._id}?slug=${postSlug}`);
         const data = await res.json();
         if (res.ok) {
             setData(data.post[0])
@@ -25,7 +24,7 @@ export default function Post() {
 
     useEffect(()=>{
         (async()=>{
-            const res = await fetch("/api/post/getpost?limit=3")
+            const res = await fetch(`/api/post/getpost/${user._id}?limit=3`)
             const data = await res.json()
             if (res.ok) {
                 setRecentPost(data.post)

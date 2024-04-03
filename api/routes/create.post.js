@@ -4,7 +4,7 @@ import {verifyuser} from "../utils/verifyuser.js"
 import {CreatePost,getPost,deletePost ,updatePost} from "../controller/createpost.controller.js"
 
 router.post("/create", verifyuser,CreatePost);
-router.get("/getpost",verifyuser,getPost);
+router.get("/getpost/:userId",verifyuser,getPost);
 router.delete("/delete-post/:postId/:userId",verifyuser,deletePost)
 router.put("/update-post/:userId/:postId",verifyuser,updatePost);
 

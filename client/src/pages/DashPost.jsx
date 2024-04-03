@@ -13,7 +13,7 @@ export default function DashPost() {
  
   useEffect(()=>{
     const showPost = async()=>{
-      const res = await fetch(`/api/post/getpost?userId=${user._id}`);
+      const res = await fetch(`/api/post/getpost/${user._id}?userId=${user._id}`);
       const data = await res.json();
       if (res.ok) {
         setPosts(data.post)
@@ -30,7 +30,7 @@ export default function DashPost() {
   },[])
   const handleShowMore = async ()=>{
     const startIndex = posts.length
-    const res = await fetch(`/api/post/getpost/?userId=${user._id}&startIndex=${startIndex}`);
+    const res = await fetch(`/api/post/getpost/${user._id}?userId=${user._id}&startIndex=${startIndex}`);
     const data = await res.json();
     if (res.ok) {
       setPosts([...posts,...data.post])

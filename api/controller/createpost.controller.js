@@ -23,7 +23,7 @@ export const CreatePost = async (req,res,next)=>{
 }
 
 export const getPost = async (req,res,next)=>{
-    if (!req.user.isAdmin && req.user.id !== req.query.userId) {
+    if (!req.user.isAdmin && req.user.id !== req.params.userId) {
         return next(errorHandler(403,"You are not allowed to see the posts"))
     }
     try {
@@ -34,7 +34,7 @@ export const getPost = async (req,res,next)=>{
 
         const  post= await Post.find({
             ...(req.query.userId && {userId:req.query.userId}),
-            ...(req.query.category && {category:req.query.category}),
+            ...(req.query.category  && {category:req.query.category}),
             ...(req.query.slug && {slug:req.query.slug}),
             ...(req.query.postId && {_id : req.query.postId}),
             ...(req.query.searchTerm && {$or:[
@@ -47,10 +47,12 @@ export const getPost = async (req,res,next)=>{
         const now = new Date();
         const lastOneMonth = new Date(now.getFullYear(),now.getMonth()-1,now.getDate());
         const lastMonthPost = await Post.find({createdAt:{$gte:lastOneMonth}})
+        // const userPost = await Post.find().sort({updatedAt:direction}).skip(startIndex).limit(limit)
         return res.status(200).json({
             post,
             totalPosts,
-            lastMonthPost
+            lastMonthPost,
+            // userPost
         })
 
     } catch (error) {

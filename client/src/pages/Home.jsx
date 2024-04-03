@@ -8,7 +8,7 @@ function Home() {
   const [post,setPost] = useState([])
   useEffect(()=>{
     (async()=>{
-      const res = await fetch(`/api/post/getpost?userId=${currentUser._id}`)
+      const res = await fetch(`/api/post/getpost/${currentUser._id}`)
       const data = await res.json();
       if (res.ok) {
         setPost(data.post)
@@ -16,6 +16,7 @@ function Home() {
     })()
 
   },[])
+ 
   return (
     <div>
       <div className="flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto">
@@ -28,7 +29,7 @@ function Home() {
       </div>
       <div className="flex flex-col gap-8 py-7  w-full mx-auto">
         {
-          post && post.length >0 && 
+          post && post.length > 0 && 
           <div className="flex flex-col gap-4">
             <h1 className="text-2xl font-semibold text-center">Recent Post </h1>
             <div className="flex flex-wrap gap-4 justify-center">
