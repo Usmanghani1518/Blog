@@ -40,7 +40,7 @@ export const signin = async (req, res, next) => {
   try {
     const validateUser = await User.findOne({ email });
     if (!validateUser) {
-     return next(errorHandler(404, "There is no register account plz signup "));
+     return next(errorHandler(404, "There is no register account plz sign up "));
     }
     const validatePassword = bcrypt.compareSync(
       password,

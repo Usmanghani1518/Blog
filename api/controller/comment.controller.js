@@ -81,7 +81,7 @@ export const editComment = async (req, res, next) => {
     if (!comment) {
       return next(errorHandler(404, "This comment is not found"));
     }
-    if (req.user.id !== comment.owner && !req.user.isAdmin) {
+    if (req.user.id !== comment.owner.toString() && !req.user.isAdmin) {
       return next(errorHandler(403, "you are not allowed to do this action"));
     }
     const { content } = req.body;
@@ -106,7 +106,8 @@ export const deleteComment = async (req, res, next) => {
     if (!comment) {
       next(errorHandler(404, "There is no comment to update"));
     }
-    if (req.user.id !== comment.owner && !req.user.isAdmin) {
+    
+    if (req.user.id !== comment.owner.toString() && !req.user.isAdmin) {
       next(errorHandler(403, "You are not allowed to do this action"));
     }
     await Comment.findByIdAndDelete(req.params.commentId);

@@ -62,7 +62,7 @@ const [commentId,setCommentId] = useState(null)
                 <Table.Cell className='text-center'>{comment.numberOfLikes}</Table.Cell>
                 <Table.Cell>{comment.postId}</Table.Cell>
                 <Table.Cell>{comment.owner}</Table.Cell>
-                <Table.Cell><span onClick={()=>{setShowModal(true);setCommentId(comment._id)}} className='text-red-500 cursor-pointer'>Delete</span> </Table.Cell>
+                <Table.Cell><span onClick={()=>{setShowModal(true);setCommentId(comment._id)}} className='text-red-500 cursor-pointer hover:underline'>Delete</span> </Table.Cell>
               </Table.Row>
               )
             }

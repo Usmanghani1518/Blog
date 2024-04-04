@@ -21,7 +21,10 @@ export default function Header() {
   const dispatch = useDispatch();
   const path = useLocation().pathname;
   const location = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [scroll,setScroll] = useState(0)
+
+  // this is for the load the search data 
    useEffect(()=>{
     const urlPrams=new  URLSearchParams(location.search);
     const searchTermUrl = urlPrams.get("searchTerm")
@@ -29,6 +32,7 @@ export default function Header() {
       setSearchTerm(searchTermUrl)
     }
    },[location.search])
+   // for submit the search data to server and get its infromation
    const handleSubmitSearch = (e)=>{
     e.preventDefault();
     const urlPrams = new URLSearchParams(location.search);
@@ -39,6 +43,17 @@ export default function Header() {
 
    }
   const hadleSignOut = useUserSignOut()
+  // for if user scroll top show the header 
+  // const handleScroll = ()=>{
+  //   const inY = window.scrollY.toFixed(0)
+  //   if (inY > scroll) {
+  //     console.log("ya down ho raha ha ");}
+  //   setScroll(inY)
+  // }
+  // window.addEventListener("scroll",handleScroll)
+
+
+
   return (
     <Navbar className="border-b-2">
       <Link

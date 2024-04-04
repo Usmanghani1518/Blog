@@ -98,7 +98,7 @@ export default function DsahUser() {
                       setDeletionId(user._id);
                       setShowModal(true);
                     }}
-                    className=" text-red-500 font-semibold cursor-pointer"
+                    className=" text-red-500 hover:underline font-semibold cursor-pointer"
                   >
                     Delete
                   </span>
@@ -127,7 +127,7 @@ export default function DsahUser() {
             <div>
               <PiWarningBold className=" text-yellow-200 text-5xl w-full self-center" />
               <p className="text-gray-500 text-center py-3">
-                You Confirm to Delete this Post
+                You Confirm to Delete this User
               </p>
               <div className="flex gap-3 justify-center">
                 <Button onClick={handleDelete} color="failure">
@@ -140,7 +140,7 @@ export default function DsahUser() {
         </Modal>
       </div>):(
     <>
-        <div className='text-8xl self-center mx-auto top-0'><img className='object-cover max-h-screen' src={noData} alt="" /></div>
+        <div className='text-8xl self-center mx-auto '><img className='object-cover w-full m-4 max-h-screen' src={noData} alt="" /></div>
     </>)}
     </>
   );

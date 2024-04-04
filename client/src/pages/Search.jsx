@@ -74,7 +74,7 @@ export default function Search() {
     const urlPrams = new URLSearchParams(location.search);
     urlPrams.set("startIndex",startIndex)
     const searchquery = urlPrams.toString()
-    const res = await fetch(`/api/post/getpost?${searchquery}`)
+    const res = await fetch(`/api/post/getpost/${user._id}?${searchquery}`)
     const data = await res.json()
     if (res.ok) {
       setPost([...post,...data.post])
@@ -105,7 +105,7 @@ export default function Search() {
             <label className="whitespace-nowrap font-semibold">
               Search Term:
             </label>
-            <Select id="order" onChange={handleChange} value={sidebarData.sort}>
+            <Select id="order" onChange={handleChange} value={sidebarData.sort || ''}>
               <option value="asc">Latest</option>
               <option value="des">Oldest</option>
             </Select>
@@ -115,7 +115,7 @@ export default function Search() {
             <Select
               id="category"
               onChange={handleChange}
-              value={sidebarData.category }
+              value={sidebarData.category || '' }
             >
               <option value="uncategorized">Uncategorized</option>
               <option value="react.js">React</option>
@@ -144,7 +144,7 @@ export default function Search() {
             )
           }
         </div>
-     {showMore&&<p onClick={handleShowMore} className="py-4 text-teal-500 hover:underline cursor-pointer text-center">Show More</p>}
+     {showMore&&<p onClick={handleShowMore} className="m-4 text-teal-500 hover:underline cursor-pointer max-h-screen object-cover text-center">Show More</p>}
       </div>
     </div>
   );

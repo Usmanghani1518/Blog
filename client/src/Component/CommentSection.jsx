@@ -43,12 +43,14 @@ export default function CommentSection({ postId }) {
     const data = await res.json();
     if (res.ok) {
       setComment("");
-      const owner = { avatar: user.avatar, username: user.username };
+      const owner = { avatar: user.avatar, username: user.username ,_id:user._id };
       data.owner = owner;
+      console.log(data);
       setCommentData([data, ...commentData]);
       settotalComment(totalComment+1)
     }
   };
+
   const handleShowMore = async () => {
     const startInex = commentData.length;
     const res = await fetch(
@@ -102,6 +104,9 @@ export default function CommentSection({ postId }) {
 
    const handleDeleteComment = async ()=>{
     setShowModal(false);
+    console.log(deletId);
+    console.log(commentData);
+    console.log(user._id);
     const res= await fetch(`/api/comment/delete-comment/${deletId}`,{
       method:"DELETE"
     })
@@ -110,6 +115,7 @@ export default function CommentSection({ postId }) {
       settotalComment(totalComment -1)
     }
    }
+  //  console.log(user._id);
   return (
     <div className="max-w-2xl w-full mx-auto">
       {user ? (

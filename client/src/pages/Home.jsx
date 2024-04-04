@@ -5,6 +5,7 @@ import {useSelector} from "react-redux"
 import PostCard from "./PostCard.jsx"
 function Home() {
   const currentUser = useSelector((state)=>state.user.currentUser);
+  const [seeAll ,setseeAll] = useState(false)
   const [post,setPost] = useState([])
   useEffect(()=>{
     (async()=>{
@@ -12,6 +13,9 @@ function Home() {
       const data = await res.json();
       if (res.ok) {
         setPost(data.post)
+        if (data.post.length === 9 ) {
+          setseeAll(true)
+        }
       }
     })()
 
@@ -39,7 +43,7 @@ function Home() {
               )
             }
             </div>
-            <Link to={"/search"} className="text-teal-500 hover:underline text-center">View all posts</Link>
+           {seeAll && <Link to={"/search"} className="text-teal-500 hover:underline text-center">View all posts</Link>}
           </div>
            }
 

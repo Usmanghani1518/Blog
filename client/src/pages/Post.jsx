@@ -31,7 +31,7 @@ export default function Post() {
             }
         })()
     },[])
-    console.log(data);
+    // console.log(data);
     if (loading) {
         return  <div className='flex justify-center min-h-screen items-center'><Spinner size={"xl"}/></div>
     }
