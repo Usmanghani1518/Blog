@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {toggleTheme} from "../redux/theme/themeSlicer.js"
 import { useUserSignOut } from "./DashProfile.jsx";
 import { FaUserCircle } from "react-icons/fa";
+import HeadRoom from "react-headroom"
 
 export default function Header() {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -22,7 +23,7 @@ export default function Header() {
   const path = useLocation().pathname;
   const location = useLocation();
   const navigate = useNavigate();
-  const [scroll,setScroll] = useState(0)
+  const [showSearch,setShowSearch] = useState("hidden")
 
   // this is for the load the search data 
    useEffect(()=>{
@@ -39,28 +40,23 @@ export default function Header() {
       urlPrams.set("searchTerm",searchTerm)
       const serchQuery =urlPrams.toString()
       navigate(`/search?${serchQuery}`)
-
-
    }
   const hadleSignOut = useUserSignOut()
-  // for if user scroll top show the header 
-  // const handleScroll = ()=>{
-  //   const inY = window.scrollY.toFixed(0)
-  //   if (inY > scroll) {
-  //     console.log("ya down ho raha ha ");}
-  //   setScroll(inY)
-  // }
-  // window.addEventListener("scroll",handleScroll)
-
+const handleClick = ()=>{
+console.log("how are you bab");
+return 
+}
+document.addEventListener("click",handleClick)
 
 
   return (
+    <HeadRoom>
     <Navbar className="border-b-2">
       <Link
         to="/"
         className="self-center whitespace-nowrap dark:text-white font-semibold text-sm sm:text-xl"
       >
-        <span className="px-2 py-1 bg-gradient-to-r from-indigo-600   via-purple-500 to-pink-500 rounded-lg text-white">
+        <span className="px-2   py-1 bg-gradient-to-r from-indigo-600   via-purple-500 to-pink-500 rounded-lg text-white">
           Usman's
         </span>
         Blog
@@ -69,12 +65,13 @@ export default function Header() {
         <TextInput
           placeholder="Search..."
           rightIcon={AiOutlineSearch}
-          className="hidden lg:inline"
+          className={`${showSearch} lg:inline `}
           onChange={(e)=>setSearchTerm(e.target.value)}
+          
           value={searchTerm}
         />{" "}
       </form>
-      <Button type="submit" className="w-12 h-10 lg:hidden " color="gray" pill>
+      <Button type="submit" onClick={()=>setShowSearch("")} className="w-12 h-10 lg:hidden " color="gray" pill>
         <AiOutlineSearch />
       </Button>
       <div className="flex gap-2 md:order-2">
@@ -86,7 +83,6 @@ export default function Header() {
         </Button>
         {currentUser ? (
           <Dropdown
-            arrowIcon={false}
             inline
             label={currentUser.avatar?(<Avatar className="bg-gray-300 rounded-full" alt="Usr" img={currentUser.avatar} rounded  />):(<FaUserCircle/>)}
           >
@@ -123,5 +119,6 @@ export default function Header() {
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
+    </HeadRoom>
   );
 }

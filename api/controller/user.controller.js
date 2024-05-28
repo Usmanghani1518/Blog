@@ -96,7 +96,7 @@ export const deleteUser = async (req,res,next)=>{
 export const signOut = async (req,res)=>{
   res.clearCookie("access_token").status(200).json({message:"user  has been signed out successfully"});
 }
-
+// this api is used for get the value of all users 
 export const getUser = async (req,res,next)=>{
   if (!req.user.isAdmin || req.params.userId !== req.user.id) {
     return next(errorHandler(403,"Your are not allowed to see these users"))
@@ -115,8 +115,7 @@ export const getUser = async (req,res,next)=>{
     next(error)
   }
 }
-
-
+// delete the user account by an admin 
 export const deleteUserByAdmin = async ( req,res,next)=>{
  if (!req.user.isAdmin || req.params.adminId !== req.user.id) {
   return next(errorHandler(403,"You are not allowed to do this "))
@@ -127,4 +126,20 @@ export const deleteUserByAdmin = async ( req,res,next)=>{
  } catch (error) {
   next(error)
  }
+}
+// send the notification to the user 
+export const notificationToUser = async (req,res,next)=>{
+  if (!req.user.isAdmin || req.user.id !== req.params.adminId) {
+   return next(errorHandler(403,"You are not allowed to do this action"))
+  }
+  try {
+    const user = User.findById(req.params.userId);
+    if (!user) {
+      return next(errorHandler(403,"Ther is no user with longer"))
+    }
+   await User.findByIdAndUpdate(req.params.userId,{notification:req.body.content})
+   return res.status(200).json("notification send successfully")
+  } catch (error) {
+    next(error)
+  }
 }

@@ -31,7 +31,7 @@ export default function update() {
 
   useEffect(() => {
     const fetchpost = async () => {
-      const res = await fetch(`/api/post/getpost/?postId=${postId}`);
+      const res = await fetch(`/api/post/getpost/${user}?postId=${postId}`);
       const data = await res.json();
       if (!res.ok) {
         seterrorUpdate(data.message)

@@ -22,6 +22,10 @@ const usereSchema = new Schema({
     isAdmin:{
         type:Boolean,
         default:false
+    },
+    notification:{
+        type:String,
+        default:""
     }
 
 },{timestamps:true})

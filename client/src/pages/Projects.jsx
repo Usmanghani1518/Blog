@@ -75,6 +75,18 @@ function WriteForUsPage() {
             <p className="text-gray-600 mb-8">
                 We get <strong>50-100 submissions per month</strong>. Therefore avoid sending emails asking whether your article is getting published or not. If we have selected your article, you’ll hear from us.
             </p>
+            <section className="pb-5">
+
+            <form >
+                <h2 className="text-center text-2xl text-pink-500">Ready to Submit?</h2>
+                <p className="text-center">Fill out the form below to submit your content for consideration.</p>
+                <div className="">
+                    <div className="">
+                        <p>First Name</p>
+                    </div>
+                </div>
+            </form>
+            </section>
             <p className="text-gray-600 mb-8">
                 The page is a bit long and the requirements a bit stiff, but we feel it’s necessary to reduce spam submissions. <strong>Looking forward to some great articles.</strong> If we think it’s the right fit, we’ll be in touch to discuss the next steps and anything else we need to publish your post.
             </p>
